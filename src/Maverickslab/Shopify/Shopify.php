@@ -27,13 +27,6 @@ class Shopify {
 
 
     public function __call($methodName, $arguments){
-
-        if(is_null($this->requestor->storeUrl))
-            throw new ShopifyException('Store Url not provided');
-
-//        if(is_null($this->requestor->storeToken))
-//            throw new ShopifyException('Access Token not provided');
-
         $class = $this->resolveClass($methodName);
 
        return new $class($this->requestor);

@@ -124,14 +124,13 @@ class ApiRequestor {
         }
     }
 
+
     public function appendResourceId($url, $productId)
     {
         return $url.'/'.$productId;
     }
 
-    /**
-     * @param $code
-     */
+
     public function generateTokenRequestParams ( $code )
     {
         return [
@@ -192,6 +191,7 @@ class ApiRequestor {
         }
         return $scopes;
     }
+
 
     public function getStoreToken()
     {
