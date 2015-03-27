@@ -96,7 +96,7 @@ class ApiRequestor {
 
     public function get($resourceId = null, $options = [])
     {
-        $this->url = $this->sanitizeUrl($this->getStoreUrl()).$this->resource;
+        $this->url = $this->getUrl();
 
         if(!is_null($resourceId))
             $this->url = $this->appendResourceId($this->url, $resourceId);
@@ -213,11 +213,34 @@ class ApiRequestor {
     }
 
 
+    public function getUrl(){
+        return $this->sanitizeUrl($this->getStoreUrl()).$this->resource;
+    }
+
     public function getHeaders()
     {
         return [
             'X-Shopify-Access-Token' => $this->getStoreToken()
         ];
+    }
+
+    public function post ( $post_data )
+    {
+        return $this->client->post($this->url, $this->getHeaders(), $post_data)->send();
+    }
+
+    public function put ( $id, $modify_data )
+    {
+        $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
+
+        return $this->client->put($this->url, $this->getHeaders(), $modify_data)->send();
+    }
+
+    public function delete ( $id )
+    {
+        $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
+
+        return $this->client->delete($this->url, $this->getHeaders())->send();
     }
 
 

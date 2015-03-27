@@ -12,7 +12,7 @@ namespace Maverickslab\Shopify\Resources;
 use Maverickslab\Shopify\ApiRequestor;
 use Maverickslab\Shopify\Exceptions\ShopifyException;
 
-class Product implements ResourceInterface{
+class Order implements ResourceInterface{
 
     /**
      * @var ApiRequestor
@@ -21,7 +21,7 @@ class Product implements ResourceInterface{
 
     public function __construct( ApiRequestor $requestor){
         $this->requestor = $requestor;
-        $this->requestor->resource = '/admin/products';
+        $this->requestor->resource = '/admin/orders';
     }
 
 
@@ -41,7 +41,7 @@ class Product implements ResourceInterface{
     public function modify ( $id, $modify_data )
     {
         if(is_null($id))
-            throw new ShopifyException('Product Id not provided');
+            throw new ShopifyException('Order Id not provided');
 
         if(sizeof($modify_data) < 0)
             throw new ShopifyException('Modify Data is empty');
@@ -52,7 +52,7 @@ class Product implements ResourceInterface{
     public function remove ( $id )
     {
         if(is_null($id))
-            throw new ShopifyException('Product Id not provided');
+            throw new ShopifyException('Order Id not provided');
 
         return $this->requestor->delete( $id );
     }

@@ -11,6 +11,8 @@ namespace Maverickslab\Shopify\Resources;
 
 interface ResourceInterface {
 
-    public function get($id = null);
-    public function create();
+    public function get( $id = null );
+    public function create( $post_data );
+    public function modify( $id, $modify_data);
+    public function remove( $id );
 } 
