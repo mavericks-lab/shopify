@@ -42,7 +42,7 @@ class ApiRequestor {
 
         $link = $this->sanitizeUrl($this->getStoreUrl()). $this->authorizationUrl.$this->getQueryString($options);
 
-        return Redirect($link);
+        return $link;
     }
 
 
@@ -149,7 +149,7 @@ class ApiRequestor {
         $options = [
             'client_id' => $this->getClientId(),
             'scope' => $this->generateScope ( $this->getScopes() ),
-            'redirect_uri' => 'http://localhost:8000/verified'
+            'redirect_uri' => $this->getRedirectUrl()
         ];
         return $options;
     }
@@ -241,6 +241,18 @@ class ApiRequestor {
         $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
 
         return $this->client->delete($this->url, $this->getHeaders())->send();
+    }
+
+    public  function getRedirectUrl ()
+    {
+        $redirect = config('shopify.INSTALLATION_REDIRECT_URL');
+
+        if(is_null($redirect))
+        {
+            throw new ShopifyException('No Redirect url provided');
+        }
+
+        return $redirect;
     }
 
 

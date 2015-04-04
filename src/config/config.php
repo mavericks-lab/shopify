@@ -6,6 +6,8 @@ return [
 
     'CLIENT_SECRET' => env('SHOPIFY_CLIENT_SECRET', NULL),
 
+    'INSTALLATION_REDIRECT_URL' => env('SHOPIFY_INSTALLATION_REDIRECT_URL', NULL),
+
     'SCOPE' => [
         /*
          *  Specify the scope of your applicatiion by indicating the resource you will
