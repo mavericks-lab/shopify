@@ -25,7 +25,6 @@ return [
          * eg.
          * 'orders' => ['create', 'delete', 'paid']
          */
-        'products' => ['update']
     ],
 
     'WEBHOOK_INSTALLATION_URL' => env('SHOPIFY_WEBHOOK_INSTALLATION_URL', NULL)
