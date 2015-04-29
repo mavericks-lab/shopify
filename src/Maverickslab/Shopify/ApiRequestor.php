@@ -9,6 +9,7 @@
 namespace Maverickslab\Shopify;
 
 
+use Guzzle\Http\Exception\ClientErrorResponseException;
 use Guzzle\Service\Client;
 use Illuminate\Support\Facades\Config;
 use Maverickslab\Shopify\Exceptions\ShopifyException;
@@ -54,11 +55,14 @@ class ApiRequestor {
 
         $link = $this->sanitizeUrl($this->getStoreUrl()) . $this->tokenUrl;
 
-        $response = $this->client->post($link, [], $params)->send();
+        try{
+            $response = $this->client->post($link, [], $params)->send();
 
-        return $response->json();
+            return $response->json();
+        }catch (ClientErrorResponseException $exception){
+            throw new ShopifyException( $exception->getMessage(), $exception->getResponse()->json());
+        }
     }
-
 
 
     public function generateScope($scopes)
@@ -93,21 +97,23 @@ class ApiRequestor {
     }
 
 
-
     public function get($resourceId = null, $options = [])
     {
-        $this->url = $this->getUrl();
+        try{
+            $this->url = $this->getUrl();
 
-        if(!is_null($resourceId))
-            $this->url = $this->appendResourceId($this->url, $resourceId);
+            if(!is_null($resourceId)) $this->url = $this->appendResourceId($this->url, $resourceId);
 
-        $this->url = $this->jsonizeUrl($this->url);
+            $this->url = $this->jsonizeUrl($this->url);
 
-        $headers = $this->getHeaders();
+            $headers = $this->getHeaders();
 
-        $response = $this->client->get($this->url, $headers, $options)->send();
+            $response = $this->client->get($this->url, $headers, $options)->send();
 
-        return $response->json();
+            return $response->json();
+        }catch (ClientErrorResponseException $exception){
+            throw new ShopifyException( $exception->getMessage(), $exception->getResponse()->json());
+        }
     }
 
 
@@ -226,21 +232,35 @@ class ApiRequestor {
 
     public function post ( $post_data )
     {
-        return $this->client->post($this->url, $this->getHeaders(), $post_data)->send();
+        try{
+            $this->url = $this->jsonizeUrl($this->getUrl());
+            $response = $this->client->post($this->url, $this->getHeaders(), json_encode($post_data))->send();
+            return $response->json();
+        }catch (ClientErrorResponseException $exception){
+            throw new ShopifyException( $exception->getMessage(), $exception->getResponse()->json());
+        }
     }
 
     public function put ( $id, $modify_data )
     {
-        $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
+        try{
+            $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
 
-        return $this->client->put($this->url, $this->getHeaders(), $modify_data)->send();
+            return $this->client->put($this->url, $this->getHeaders(), $modify_data)->send();
+        }catch (ClientErrorResponseException $exception){
+            throw new ShopifyException( $exception->getMessage(), $exception->getResponse()->json());
+        }
     }
 
     public function delete ( $id )
     {
-        $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
+        try{
+            $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
 
-        return $this->client->delete($this->url, $this->getHeaders())->send();
+            return $this->client->delete($this->url, $this->getHeaders())->send();
+        }catch (ClientErrorResponseException $exception){
+            throw new ShopifyException( $exception->getMessage(), $exception->getResponse()->json());
+        }
     }
 
     public  function getRedirectUrl ()
