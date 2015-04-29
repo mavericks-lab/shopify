@@ -10,6 +10,7 @@ namespace Maverickslab\Shopify\Resources;
 
 
 use Maverickslab\Shopify\ApiRequestor;
+use Maverickslab\Shopify\Exceptions\ShopifyException;
 
 class Webhook extends BaseResource{
 
@@ -17,7 +18,7 @@ class Webhook extends BaseResource{
     public function __construct (ApiRequestor $requestor)
     {
         $this->requestor = $requestor;
-        $this->requestor->resource = '/admin/orders';
+        $this->requestor->resource = '/admin/webhooks';
     }
 
     public function install(){
@@ -25,14 +26,15 @@ class Webhook extends BaseResource{
 
         foreach ($webHooks as $resource => $events) {
             foreach ($events as $event) {
-                $webHook = json_encode([
+                $webHook = [
                     'webhook' => [
                         'topic'   => $resource . '/' . $event,
                         'address' => $this->getWebhookUrl(),
                         'format'  => 'json'
                     ]
-                ]);
-                //$response = self::sendRequest($url, "POST", $organizationAccount['user_token'], $webHook);
+                ];
+
+                $this->requestor->post($webHook);
             }
         }
     }
@@ -50,5 +52,13 @@ class Webhook extends BaseResource{
 
     private function getWebhookUrl ()
     {
+        $webhook_installation_url = config('shopify.WEBHOOK_INSTALLATION_URL');
+
+        if(is_null($webhook_installation_url))
+        {
+            throw new ShopifyException('No webhook installation url provided');
+        }
+
+        return $webhook_installation_url;
     }
 }

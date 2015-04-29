@@ -226,7 +226,8 @@ class ApiRequestor {
     public function getHeaders()
     {
         return [
-            'X-Shopify-Access-Token' => $this->getStoreToken()
+            'X-Shopify-Access-Token' => $this->getStoreToken(),
+            'Content-Type' => 'application/json'
         ];
     }
 
@@ -246,7 +247,9 @@ class ApiRequestor {
         try{
             $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
 
-            return $this->client->put($this->url, $this->getHeaders(), $modify_data)->send();
+            $response = $this->client->put($this->url, $this->getHeaders(), $modify_data)->send();
+
+            return $response->json();
         }catch (ClientErrorResponseException $exception){
             throw new ShopifyException( $exception->getMessage(), $exception->getResponse()->json());
         }
@@ -257,7 +260,8 @@ class ApiRequestor {
         try{
             $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
 
-            return $this->client->delete($this->url, $this->getHeaders())->send();
+            $response = $this->client->delete($this->url, $this->getHeaders())->send();
+            return $response->json();
         }catch (ClientErrorResponseException $exception){
             throw new ShopifyException( $exception->getMessage(), $exception->getResponse()->json());
         }

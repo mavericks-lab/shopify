@@ -23,8 +23,9 @@ return [
          *  Specify the webhooks your application will install on the merchants store
          *
          * eg.
-         * 'Orders' => ['create', 'delete', 'paid']
+         * 'orders' => ['create', 'delete', 'paid']
          */
+        'products' => ['update']
     ],
 
     'WEBHOOK_INSTALLATION_URL' => env('SHOPIFY_WEBHOOK_INSTALLATION_URL', NULL)

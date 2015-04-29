@@ -48,11 +48,12 @@ class Shopify {
     public function resolveClass($className)
     {
         $class = $this->getNamespace().$this->sanitizeClassName ( $className );
+
         if( class_exists($class) ){
             return $class;
         }
 
-        throw new \Exception;
+        throw new ShopifyException('There is no support for this resource yet');
     }
 
 
