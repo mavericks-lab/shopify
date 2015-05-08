@@ -93,7 +93,16 @@ class ApiRequestor {
 
     public function sanitizeUrl($storeUrl)
     {
-       return ( strpos ( $storeUrl, "http" )!==false ) ? str_replace ( "http", "https", $storeUrl ) : "https://" . $storeUrl;
+        $url = $storeUrl;
+        if( $this->hasProtocol ( $storeUrl ) )
+        {
+            if( ! $this->protocolIsHttps ( $storeUrl ) )
+            {
+                $url = str_replace ( "http", "https", $storeUrl );
+            }
+            return $url;
+        }
+        return "https://" . $storeUrl;
     }
 
 
@@ -277,6 +286,24 @@ class ApiRequestor {
         }
 
         return $redirect;
+    }
+
+    /**
+     * @param $storeUrl
+     * @return bool
+     */
+    private function hasProtocol ( $storeUrl )
+    {
+        return strpos ( $storeUrl, "http" )!== false;
+    }
+
+    /**
+     * @param $storeUrl
+     * @return bool
+     */
+    private function protocolIsHttps ( $storeUrl )
+    {
+        return (strpos ( $storeUrl, "https" ) !== false ) ? true : false;
     }
 
 
