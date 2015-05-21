@@ -256,7 +256,7 @@ class ApiRequestor {
         try{
             $this->url = $this->jsonizeUrl($this->appendResourceId($this->getUrl(), $id));
 
-            $response = $this->client->put($this->url, $this->getHeaders(), $modify_data)->send();
+            $response = $this->client->put($this->url, $this->getHeaders(), json_encode($modify_data))->send();
 
             return $response->json();
         }catch (ClientErrorResponseException $exception){
