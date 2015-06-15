@@ -276,6 +276,16 @@ class ApiRequestor {
         }
     }
 
+    public function count(){
+        $this->url = $this->getUrl().'/count';
+
+        $this->url = $this->jsonizeUrl($this->url);
+        $headers = $this->getHeaders();
+        $response = $this->client->get($this->url, $headers)->send();
+
+        return $response->json();
+    }
+
     public  function getRedirectUrl ()
     {
         $redirect = config('shopify.INSTALLATION_REDIRECT_URL');

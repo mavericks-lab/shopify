@@ -12,12 +12,8 @@ namespace Maverickslab\Shopify\Resources;
 use Maverickslab\Shopify\ApiRequestor;
 use Maverickslab\Shopify\Exceptions\ShopifyException;
 
-class Product implements ResourceInterface{
+class Product extends BaseResource{
 
-    /**
-     * @var ApiRequestor
-     */
-    private $requestor;
 
     public function __construct( ApiRequestor $requestor){
         $this->requestor = $requestor;
@@ -25,35 +21,35 @@ class Product implements ResourceInterface{
     }
 
 
-    public function get ( $id = null, $options = [] )
-    {
-        return $this->requestor->get($id, $options);
-    }
-
-    public function create ( $post_data )
-    {
-        if(sizeof($post_data) < 0)
-            throw new ShopifyException('Create Data is empty');
-
-        return $this->requestor->post( $post_data );
-    }
-
-    public function modify ( $id, $modify_data )
-    {
-        if(is_null($id))
-            throw new ShopifyException('Product Id not provided');
-
-        if(sizeof($modify_data) < 0)
-            throw new ShopifyException('Modify Data is empty');
-
-        return $this->requestor->put($id, $modify_data);
-    }
-
-    public function remove ( $id )
-    {
-        if(is_null($id))
-            throw new ShopifyException('Product Id not provided');
-
-        return $this->requestor->delete( $id );
-    }
+//    public function get ( $id = null, $options = [] )
+//    {
+//        return $this->requestor->get($id, $options);
+//    }
+//
+//    public function create ( $post_data )
+//    {
+//        if(sizeof($post_data) < 0)
+//            throw new ShopifyException('Create Data is empty');
+//
+//        return $this->requestor->post( $post_data );
+//    }
+//
+//    public function modify ( $id, $modify_data )
+//    {
+//        if(is_null($id))
+//            throw new ShopifyException('Product Id not provided');
+//
+//        if(sizeof($modify_data) < 0)
+//            throw new ShopifyException('Modify Data is empty');
+//
+//        return $this->requestor->put($id, $modify_data);
+//    }
+//
+//    public function remove ( $id )
+//    {
+//        if(is_null($id))
+//            throw new ShopifyException('Product Id not provided');
+//
+//        return $this->requestor->delete( $id );
+//    }
 }

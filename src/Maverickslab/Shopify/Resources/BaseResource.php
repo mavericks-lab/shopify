@@ -11,6 +11,7 @@ namespace Maverickslab\Shopify\Resources;
 
 class BaseResource implements ResourceInterface{
 
+    protected $requestor;
 
     public function get ( $id = null, $options = [] )
     {
@@ -42,5 +43,9 @@ class BaseResource implements ResourceInterface{
             throw new ShopifyException('Product Id not provided');
 
         return $this->requestor->delete( $id );
+    }
+
+    public function count(){
+        return $this->requestor->count();
     }
 } 
