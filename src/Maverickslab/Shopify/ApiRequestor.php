@@ -298,10 +298,7 @@ class ApiRequestor {
         return $redirect;
     }
 
-    /**
-     * @param $storeUrl
-     * @return bool
-     */
+
     private function hasProtocol ( $storeUrl )
     {
         return strpos ( $storeUrl, "http" )!== false;
