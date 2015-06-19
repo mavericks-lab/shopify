@@ -43,7 +43,7 @@ class ApiRequestor {
 
         $link = $this->sanitizeUrl($this->getStoreUrl()). $this->authorizationUrl.$this->getQueryString($options);
 
-        return $link;
+        return rtrim($link, '/');
     }
 
 
@@ -304,10 +304,7 @@ class ApiRequestor {
         return strpos ( $storeUrl, "http" )!== false;
     }
 
-    /**
-     * @param $storeUrl
-     * @return bool
-     */
+
     private function protocolIsHttps ( $storeUrl )
     {
         return (strpos ( $storeUrl, "https" ) !== false ) ? true : false;
