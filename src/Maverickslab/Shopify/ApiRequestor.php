@@ -41,7 +41,7 @@ class ApiRequestor {
     public function install(){
         $options = $this->getAuthorizationOptions ();
 
-        $link = $this->sanitizeUrl($this->getStoreUrl()). $this->authorizationUrl.$this->getQueryString($options);
+        $link = $this->sanitizeUrl(rtrim($this->getStoreUrl(), '/')). $this->authorizationUrl.$this->getQueryString($options);
 
         return $link;
     }
@@ -304,10 +304,7 @@ class ApiRequestor {
         return strpos ( $storeUrl, "http" )!== false;
     }
 
-    /**
-     * @param $storeUrl
-     * @return bool
-     */
+
     private function protocolIsHttps ( $storeUrl )
     {
         return (strpos ( $storeUrl, "https" ) !== false ) ? true : false;
