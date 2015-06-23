@@ -115,9 +115,13 @@ class ApiRequestor {
 
             $this->url = $this->jsonizeUrl($this->url);
 
+            if(sizeof($options) > 0){
+                $this->url = $this->url.$this->getQueryString($options);
+            }
+
             $headers = $this->getHeaders();
 
-            $response = $this->client->get($this->url, $headers, $options)->send();
+            $response = $this->client->get($this->url, $headers)->send();
 
             return $response->json();
         }catch (ClientErrorResponseException $exception){
