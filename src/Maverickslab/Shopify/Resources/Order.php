@@ -52,4 +52,12 @@ class Order extends BaseResource{
 //
 //        return $this->requestor->delete( $id );
 //    }
+
+    public function markAsPaid($order_id, $post_data){
+        $this->requestor->resource = $this->requestor->resource.'/'.$order_id.'/transactions';
+        if(sizeof($post_data) < 0)
+            throw new ShopifyException('Transaction Data is empty');
+
+        return $this->requestor->post( $post_data );
+    }
 }
