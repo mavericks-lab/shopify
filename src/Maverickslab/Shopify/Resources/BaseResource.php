@@ -9,6 +9,9 @@
 namespace Maverickslab\Shopify\Resources;
 
 
+use Maverickslab\Shopify\Exceptions\ShopifyException;
+
+
 class BaseResource implements ResourceInterface{
 
     protected $requestor;
