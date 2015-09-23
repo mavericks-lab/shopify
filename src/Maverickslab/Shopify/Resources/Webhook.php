@@ -21,22 +21,32 @@ class Webhook extends BaseResource{
         $this->requestor->resource = '/admin/webhooks';
     }
 
-    public function install(){
+    public function install($hook = null){
         $webHooks = $this->generateWebhooks();
-
-        foreach ($webHooks as $resource => $events) {
-            foreach ($events as $event) {
-                $webHook = [
-                    'webhook' => [
-                        'topic'   => $resource . '/' . $event,
-                        'address' => $this->getWebhookUrl(),
-                        'format'  => 'json'
-                    ]
-                ];
-
-                $this->requestor->post($webHook);
+        if(!is_null($hook)){
+            $webHook = [
+                'webhook' => [
+                    'topic'   => $hook,
+                    'address' => $this->getWebhookUrl(),
+                    'format'  => 'json'
+                ]
+            ];
+            $this->requestor->post($webHook);
+        }else{
+            foreach ($webHooks as $resource => $events) {
+                foreach ($events as $event) {
+                    $webHook = [
+                        'webhook' => [
+                            'topic'   => $resource . '/' . $event,
+                            'address' => $this->getWebhookUrl(),
+                            'format'  => 'json'
+                        ]
+                    ];
+                    $this->requestor->post($webHook);
+                }
             }
         }
+
     }
 
     private function generateWebhooks ()
